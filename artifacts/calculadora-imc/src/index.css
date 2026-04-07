@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222 47% 11%;
+  --primary: 348 83% 59%;
+  --primary-foreground: 0 0% 100%;
+  --border: 214 32% 91%;
+  --ring: 348 83% 59%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
