@@ -159,18 +159,26 @@ function App() {
     return () => { document.head.removeChild(style); };
   }, []);
 
+  /**
+   * Função responsável por realizar o cálculo do IMC, validar os campos de entrada
+   * e atualizar a interface com o resultado e a classificação correspondente.
+   */
   function calcular() {
+    // Captura os valores dos inputs diretamente do DOM
     const pesoInput = (document.getElementById("peso") as HTMLInputElement).value;
     const alturaInput = (document.getElementById("altura") as HTMLInputElement).value;
     const errorEl = document.getElementById("error")!;
     const resultBox = document.getElementById("result-box")!;
 
+    // Limpa mensagens de erro e oculta o box de resultado antes de uma nova validação
     errorEl.textContent = "";
     resultBox.className = "result-box";
 
+    // Converte os valores para float, tratando a vírgula como ponto decimal
     const peso = parseFloat(pesoInput.replace(",", "."));
     const altura = parseFloat(alturaInput.replace(",", "."));
 
+    // Validação: Verifica se os campos estão vazios
     if (!pesoInput || !alturaInput) {
       errorEl.textContent = "Preencha o peso e a altura antes de calcular.";
       return;
@@ -184,6 +192,7 @@ function App() {
       return;
     }
 
+    // Cálculo do IMC: Peso / Altura²
     const imc = peso / (altura * altura);
     const imcFormatado = imc.toFixed(1);
 
@@ -191,6 +200,7 @@ function App() {
     let descricao = "";
     let classe = "";
 
+    // Lógica de classificação baseada nos critérios da OMS
     if (imc < 18.5) {
       categoria = "Abaixo do peso";
       descricao = "Seu peso está abaixo do considerado saudável para sua altura.";
@@ -217,12 +227,19 @@ function App() {
       classe = "obesidade3";
     }
 
+    // Atualiza o DOM com os resultados calculados
     document.getElementById("imc-value")!.textContent = imcFormatado;
     document.getElementById("imc-label")!.textContent = categoria;
     document.getElementById("imc-desc")!.textContent = descricao;
+    
+    // Exibe o box de resultado com a classe de cor correspondente
     resultBox.className = `result-box show ${classe}`;
   }
 
+  /**
+   * Atalho de teclado para facilitar a usabilidade.
+   * Aciona o cálculo quando o usuário pressiona a tecla Enter.
+   */
   function handleKeyDown(e: React.KeyboardEvent) {
     if (e.key === "Enter") calcular();
   }
